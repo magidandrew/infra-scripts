@@ -4,18 +4,6 @@
 sudo apt update -y
 sudo apt install -y podman podman-compose git zsh slirp4netns
 
-# Install omz
-echo "Installing oh-my-zsh..."
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
-
-# change shell to zsh
-echo "Changing shell to zsh..."
-sudo chsh -s $(which zsh) $USER
-
-# # Install uv
-# echo "Installing uv..."
-# curl -LsSf https://astral.sh/uv/install.sh | sh
-
 echo "Checking if podman is using vfs instead of fuse-overlayfs..."
 echo "You may ignore warnings about cgroupv2 and lingering"
 podman info --debug | grep graphDriverName | grep -q vfs
@@ -52,5 +40,5 @@ echo "Starting dbus to allow podman to use the systemd socket..."
 systemctl --user start dbus
 
 echo "🔌 Redirecting ports 80 and 443 to 8080 and 8443..."
-sudo iptables -t nat -A PREROUTING -p tcp --dport 80  -j REDIRECT --to-port 8080
+sudo iptables -t nat -A PREROUTING -p tcp --dport 80  -j REDIRECT --to-port 8888
 sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 8443

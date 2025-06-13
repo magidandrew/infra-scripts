@@ -1,41 +1,79 @@
 #!/bin/bash
 
 # Install omz
-echo "Installing oh-my-zsh..."
-sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+    echo "Installing oh-my-zsh..."
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+else
+    echo "oh-my-zsh is already installed, skipping..."
+fi
 
 # change shell to zsh
-echo "Changing shell to zsh..."
-sudo chsh -s $(which zsh) $USER
+if [ "$SHELL" != "$(which zsh)" ]; then
+    echo "Changing shell to zsh..."
+    sudo chsh -s $(which zsh) $USER
+else
+    echo "Shell is already zsh, skipping..."
+fi
 
 # install node + pnpm. https://nodejs.org/en/download
 # Download and install nvm:
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
+if ! command -v nvm &> /dev/null; then
+    echo "Installing nvm..."
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.3/install.sh | bash
 
-# in lieu of restarting the shell
-\. "$HOME/.nvm/nvm.sh"
+    # in lieu of restarting the shell
+    \. "$HOME/.nvm/nvm.sh"
+else
+    echo "nvm is already installed, skipping..."
+fi
 
 # Download and install Node.js:
-nvm install 22
+if ! command -v node &> /dev/null; then
+    echo "Installing Node.js v22..."
+    nvm install 22
+else
+    echo "Node.js v22 is already installed, skipping..."
+fi
 
 # Verify the Node.js version:
 node -v # Should print "v22.16.0".
 nvm current # Should print "v22.16.0".
 
 # Download and install pnpm:
-corepack enable pnpm
+if ! command -v pnpm &> /dev/null; then
+    echo "Installing pnpm..."
+    corepack enable pnpm
+else
+    echo "pnpm is already installed, skipping..."
+fi
 
 # Verify pnpm version:
 pnpm -v
 
 # install uv
-curl -LsSf https://astral.sh/uv/install.sh | sh
+if ! command -v uv &> /dev/null; then
+    echo "Installing uv..."
+    curl -LsSf https://astral.sh/uv/install.sh | sh
 
-# find uv in path
-source ~/.zshrc
+    # find uv in path
+    source ~/.zshrc
+else
+    echo "uv is already installed, skipping..."
+fi
 
 # install podman-compose
-uv tool install podman-compose@latest
+if ! command -v podman-compose &> /dev/null; then
+    echo "Installing podman-compose..."
+    uv tool install podman-compose@latest
+else
+    echo "podman-compose is already installed, skipping..."
+fi
 
 # install hasura cli
-curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
+if ! command -v hasura &> /dev/null; then
+    echo "Installing hasura CLI..."
+    curl -L https://github.com/hasura/graphql-engine/raw/stable/cli/get.sh | bash
+else
+    echo "hasura CLI is already installed, skipping..."
+fi

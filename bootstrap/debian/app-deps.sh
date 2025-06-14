@@ -16,6 +16,9 @@ else
     echo "Shell is already zsh, skipping..."
 fi
 
+# hack it to think we're using zsh for the installer
+export SHELL="/bin/zsh"
+
 # install node + pnpm. https://nodejs.org/en/download
 # Download and install nvm:
 if ! command -v nvm &> /dev/null; then
@@ -77,3 +80,6 @@ if ! command -v hasura &> /dev/null; then
 else
     echo "hasura CLI is already installed, skipping..."
 fi
+
+# source zshrc
+source ~/.zshrc

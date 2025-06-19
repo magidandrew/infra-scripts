@@ -2,7 +2,7 @@
 
 # Install dependencies
 sudo apt update -y
-sudo apt install -y podman podman-compose git zsh slirp4netns
+sudo apt install -y podman git zsh slirp4netns
 
 echo "Checking if podman is using vfs instead of fuse-overlayfs..."
 echo "You may ignore warnings about cgroupv2 and lingering"

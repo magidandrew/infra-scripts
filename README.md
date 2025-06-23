@@ -14,6 +14,11 @@ Transform a fresh Debian/Ubuntu system into a fully-configured development envir
 - **🔐 Security**: SSH key generation and proper container security
 - **🌐 Networking**: Smart port redirection for web development
 
+## Missing
+1. Corepack asks for install when running `pnpm`
+2. Need to configure aws cli credentials on the machine
+3. Need to copy in the .ssh pubkey to authorized_keys and then add the private key to the github actions as a secret for the `SSH_PRIVATE_KEY` variabl$$e
+
 ## 🚀 Quick Start
 
 ### One-Line Installation

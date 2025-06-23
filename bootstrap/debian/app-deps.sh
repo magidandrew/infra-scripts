@@ -81,5 +81,10 @@ else
     echo "hasura CLI is already installed, skipping..."
 fi
 
-# source zshrc
-source ~/.zshrc
+# install pm2
+if ! command -v pm2 &> /dev/null; then
+    echo "Installing pm2..."
+    pnpm install -g pm2
+else
+    echo "pm2 is already installed, skipping..."
+fi

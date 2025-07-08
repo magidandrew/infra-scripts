@@ -80,11 +80,3 @@ if ! command -v hasura &> /dev/null; then
 else
     echo "hasura CLI is already installed, skipping..."
 fi
-
-# install pm2
-if ! command -v pm2 &> /dev/null; then
-    echo "Installing pm2..."
-    pnpm install -g pm2
-else
-    echo "pm2 is already installed, skipping..."
-fi

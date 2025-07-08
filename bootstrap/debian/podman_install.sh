@@ -3,6 +3,10 @@
 # Install dependencies
 sudo apt update -y
 sudo apt install -y podman git zsh slirp4netns
+sudo apt install -y iptables-persistent netfilter-persistent
+
+# for python installs
+sudo apt install -y build-essential python3.12-dev
 
 echo "Checking if podman is using vfs instead of fuse-overlayfs..."
 echo "You may ignore warnings about cgroupv2 and lingering"
@@ -51,3 +55,20 @@ sudo iptables -t nat -D PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 8443
 # Add the rules
 sudo iptables -t nat -A PREROUTING -p tcp --dport 80  -j REDIRECT --to-port 8888
 sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 8443
+
+# todo: put these in a different script
+# Save the rules
+sudo netfilter-persistent save
+
+# check that the rules are saved
+sudo iptables-save | grep -E "80|443"
+
+# Create swap file. Default is 2GB.
+# size = 4 GB (16 × 256 MB blocks). Adjust bs*count to taste.
+sudo dd if=/dev/zero of=/swapfile bs=256M count=16
+sudo chmod 600 /swapfile          # lock down perms
+sudo mkswap /swapfile             # format
+sudo swapon /swapfile             # enable immediately
+echo '/swapfile none swap sw 0 0' | sudo tee -a /etc/fstab
+# verify
+free -h

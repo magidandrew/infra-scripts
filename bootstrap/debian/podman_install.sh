@@ -58,7 +58,9 @@ sudo iptables -t nat -A PREROUTING -p tcp --dport 443 -j REDIRECT --to-port 8443
 
 # todo: put these in a different script
 # Save the rules
-yes | sudo netfilter-persistent save
+sudo iptables-save   > /etc/iptables/rules.v4
+sudo ip6tables-save  > /etc/iptables/rules.v6
+sudo netfilter-persistent reload
 
 # check that the rules are saved
 sudo iptables-save | grep -E "80|443"
